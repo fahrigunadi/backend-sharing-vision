@@ -1,6 +1,6 @@
 module github.com/fahrigunadi/backend-sharing-vision
 
-go 1.22.2
+go 1.21.11
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
