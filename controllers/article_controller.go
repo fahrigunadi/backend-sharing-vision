@@ -9,6 +9,7 @@ import (
 )
 
 var validation = libraries.NewValidation()
+var stauses = []string{"draft", "publish", "trash"}
 
 func GetAllArticles(c *fiber.Ctx) error {
 	articles := []models.Article{}
@@ -23,7 +24,12 @@ func GetAllArticles(c *fiber.Ctx) error {
 		offset = 0
 	}
 
-	initializers.DB.Limit(limit).Offset(offset).Find(&articles)
+	filterStatus := c.Query("status")
+	if !libraries.ContainsString(stauses, filterStatus) {
+		filterStatus = "publish"
+	}
+
+	initializers.DB.Limit(limit).Offset(offset).Where("status = ?", filterStatus).Find(&articles)
 
 	return c.JSON(articles)
 }
